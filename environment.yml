@@ -8,3 +8,4 @@ dependencies:
     - json_compare
     - pymongo==3.4.0
     - mongoengine==0.10.7
+    - Faker
