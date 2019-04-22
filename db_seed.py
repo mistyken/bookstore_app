@@ -1,9 +1,9 @@
 from pymongo import MongoClient
 from faker import Faker
 from db.book import Book
-# from db.customer import Customer
+from db.customer import Customer
 from db.inventory import Inventory
-# from db.order import Order
+from db.order import Order
 import mongoengine
 import datetime
 import random
@@ -19,7 +19,7 @@ def mongo_db_seed():
     db = client.bookstore_db_test
     fake = Faker()
 
-    for x in range(3):
+    for x in range(10):
         book = Book(
             title=fake.sentence(nb_words=10, variable_nb_words=True, ext_word_list=None),
             isbn=fake.isbn13(separator="-"),
@@ -30,25 +30,40 @@ def mongo_db_seed():
         )
         book.save()
 
-    for x in range(3):
+    for book in db.book.find():
         inventory = Inventory(
-            book=Book.objects.first().id,
+            book=book['_id'],
             stock=random.randint(1, 100),
-            name=fake.sentence(nb_words=5, variable_nb_words=False, ext_word_list=None),
-            location=fake.address()
         )
         inventory.save()
 
-    books = db.book.find()
-    for book in books:
-        print(book)
+    for x in range(10):
+        customer = Customer(
+            first_name=fake.first_name(),
+            last_name=fake.last_name(),
+            address=fake.address(),
+            email=fake.email(),
+            phone=fake.phone_number(),
+            customer_since=datetime.datetime.utcnow(),
+            orders=[]
+        )
+        customer.save()
 
-    inventories = db.inventory.find()
-    for inventory in inventories:
-        print(inventory)
+    for customer in db.customer.find():
+        for x in range(random.randint(1, 5)):
+            books = [book['_id'] for book in db.book.aggregate([{"$sample": {"size": random.randint(1, 3)}}])]
+            total = 0.0
+            for book in books:
+                total = round(total + Book.objects.with_id(book).price)
+            order = Order(
+                customer_name="{} {}".format(customer['first_name'], customer['last_name']),
+                books=books,
+                shipping_address=customer['address'],
+                total_price=total,
+                order_date=datetime.datetime.utcnow()
+            )
+            order.save()
 
 
-mongo_db_seed()
-
-# if __name__ == "__main__":
-#     mongo_db_seed()
+if __name__ == "__main__":
+    mongo_db_seed()
