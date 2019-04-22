@@ -1,0 +1,10 @@
+name: CMPE272
+dependencies:
+  - python>=3.6
+  - requests
+  - pip
+  - pip:
+    - jsonpath-ng==1.4.2
+    - json_compare
+    - pymongo==3.4.0
+    - mongoengine==0.10.7
