@@ -10,7 +10,7 @@ jobs: # A basic unit of work in a run
       - image: circleci/mongo:4.0.3
     steps: # steps that comprise the `build` job
       - checkout # check out source code to working directory
-      - run: conda create environment.yml
+      - run: conda env create environment.yml
       - run: conda activate CMPE272
       - restore_cache:
       # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
@@ -21,4 +21,4 @@ jobs: # A basic unit of work in a run
             - "/usr/local/anaconda3/envs/CMPE272"
       - run:
           command: |
-            pytest
+            pytestt

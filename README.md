@@ -19,3 +19,7 @@ To setup conda environment for this project
 ```buildoutcfg
 conda env create environment.yml
 ```
+Activate the new environment with
+```buildoutcfg
+conda activate CMPE272
+```
