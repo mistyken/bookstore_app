@@ -21,4 +21,4 @@ jobs: # A basic unit of work in a run
             - "/usr/local/anaconda3/envs/CMPE272"
       - run:
           command: |
-            pytestt
+            pytest
