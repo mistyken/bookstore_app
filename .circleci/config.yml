@@ -17,8 +17,8 @@ jobs: # A basic unit of work in a run
       - run: conda env create environment.yml
       - run:
           command: |
-            source /opt/conda/etc/profile.d/conda.sh
-            conda env list
+            echo ". /opt/conda/etc/profile.d/conda.sh" >> $BASH_ENV
+            echo "conda activate" >> $BASH_ENV
       - run: conda activate CMPE272
       - run: conda env list
       - save_cache: # cache Python dependencies using checksum of Pipfile as the cache-key
