@@ -13,16 +13,14 @@ jobs: # A basic unit of work in a run
       - restore_cache:
           # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
           key: deps9-{{ checksum "environment.yml" }}
-      - run:
-          command: |
-             conda env create environment.yml
-             source activate CMPE272
-             which conda
-             which python
+      - run: conda env create environment.yml
+      - run: echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc
+      - run: conda activate CMPE272
       - save_cache: # cache Python dependencies using checksum of Pipfile as the cache-key
           key: deps9-{{ checksum "environment.yml" }}
           paths:
-            - "/usr/local/anaconda3/envs/CMPE272"
+            - "/opt/conda/bin/conda"
+            - "/opt/conda/envs/CMPE272"
       - run:
           command: |
-            /usr/local/anaconda3/envs/CMPE272/bin/pytest
+            pytest
