@@ -6,14 +6,15 @@ from db.order import Order
 import mongoengine
 import datetime
 import random
+import argparse
 
 
-def mongo_db_seed():
+def mongo_db_seed(db_name):
     """
     This is a sample mongodb test for populating sample data into mongodb
-    :return:
+    :return: the db connection
     """
-    mongoengine.connect('bookstore_db_test', host='localhost', port=27017)
+    db = mongoengine.connect(db_name, host='localhost', port=27017)
     fake = Faker()
 
     for x in range(10):
@@ -60,6 +61,11 @@ def mongo_db_seed():
             customer.orders.append(order.id)
             customer.save()
 
+    return db
+
 
 if __name__ == "__main__":
-    mongo_db_seed()
+    parser = argparse.ArgumentParser("db_seed")
+    parser.add_argument("db_name", type=str, help="The name of the db that you wish to populate sample seed data.")
+    args = parser.parse_args()
+    mongo_db_seed(args.db_name)
