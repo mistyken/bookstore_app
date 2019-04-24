@@ -17,10 +17,9 @@ jobs: # A basic unit of work in a run
       - run: conda env create environment.yml
       - run:
           command: |
-            echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc
-            source ~/.bashrc
-      - run: conda env list
-      - run: source activate CMPE272
+            source /opt/conda/etc/profile.d/conda.sh
+            conda env list
+      - run: conda activate CMPE272
       - run: conda env list
       - save_cache: # cache Python dependencies using checksum of Pipfile as the cache-key
           key: deps9-{{ checksum "environment.yml" }}
@@ -29,4 +28,4 @@ jobs: # A basic unit of work in a run
             - "/opt/conda/envs/CMPE272"
       - run:
           command: |
-            /opt/conda/envs/CMPE272/bin/pytest
+            pytest
