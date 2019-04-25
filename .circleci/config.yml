@@ -1,6 +1,8 @@
 version: 2 # use CircleCI 2.0
 jobs: # A basic unit of work in a run
-  build: # runs not using Workflows must have a `build` job as entry point 
+  build: # runs not using Workflows must have a `build` job as entry point
+    # directory where steps are run
+    working_directory: ~/circleci-python-mongodb
     docker: # run the steps with Docker
       - image: continuumio/miniconda3
         environment: # environment variables for primary container
@@ -11,14 +13,12 @@ jobs: # A basic unit of work in a run
       - restore_cache:
           # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
           key: deps9-{{ checksum "environment.yml" }}
-      - run: conda env list
       - run: conda env create environment.yml
       - run:
           command: |
             echo ". /opt/conda/etc/profile.d/conda.sh" >> $BASH_ENV
             echo "conda activate CMPE272" >> $BASH_ENV
-      - run: conda activate CMPE272
-      - run: conda env list
+            echo "PYTHONPATH=/root/circleci-python-mongodb" >> $BASH_ENV
       - save_cache: # cache Python dependencies using checksum of Pipfile as the cache-key
           key: deps9-{{ checksum "environment.yml" }}
           paths:
