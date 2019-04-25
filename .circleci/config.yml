@@ -1,8 +1,6 @@
 version: 2 # use CircleCI 2.0
 jobs: # A basic unit of work in a run
   build: # runs not using Workflows must have a `build` job as entry point 
-    # directory where steps are run
-    working_directory: ~/circleci-python-mongodb
     docker: # run the steps with Docker
       - image: continuumio/miniconda3
         environment: # environment variables for primary container
