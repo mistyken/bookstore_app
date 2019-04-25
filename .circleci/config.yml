@@ -7,6 +7,7 @@ jobs: # A basic unit of work in a run
       - image: continuumio/miniconda3
         environment: # environment variables for primary container
           DATABASE_URL: mongodb://localhost:27017
+          PYTHONPATH: PYTHONPATH=/root/circleci-python-mongodb
       - image: circleci/mongo:4.0.3
     steps: # steps that comprise the `build` job
       - checkout # check out source code to working directory
@@ -18,7 +19,6 @@ jobs: # A basic unit of work in a run
           command: |
             echo ". /opt/conda/etc/profile.d/conda.sh" >> $BASH_ENV
             echo "conda activate CMPE272" >> $BASH_ENV
-            echo "PYTHONPATH=/root/circleci-python-mongodb" >> $BASH_ENV
       - save_cache: # cache Python dependencies using checksum of Pipfile as the cache-key
           key: deps9-{{ checksum "environment.yml" }}
           paths:
