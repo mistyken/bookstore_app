@@ -11,3 +11,6 @@ dependencies:
     - Faker
     - six>=1.10.0
     - nltk>=3.4
+    - Flask
+    - pytest
+    - coverage

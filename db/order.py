@@ -1,5 +1,5 @@
 import datetime
-from .book import Book
+from db.book import Book
 from mongoengine import Document, StringField, DateTimeField, ReferenceField, ListField, FloatField
 
 
