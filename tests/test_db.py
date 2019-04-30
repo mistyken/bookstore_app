@@ -1,12 +1,17 @@
 import pytest
 import datetime
-from db.db_seed import mongo_db_seed
+from db_seed import mongo_db_seed
 from db.book import Book
 from db.customer import Customer
 from db.inventory import Inventory
 from db.order import Order
 from mongoengine.errors import ValidationError
 from mongoengine import connect
+import os
+import sys
+module_path = os.path.abspath(os.path.join('..'))
+if module_path not in sys.path:
+    sys.path.append(module_path)
 
 
 @pytest.fixture(scope="module")
