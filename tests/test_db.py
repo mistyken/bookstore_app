@@ -7,16 +7,10 @@ from db.inventory import Inventory
 from db.order import Order
 from mongoengine.errors import ValidationError
 from mongoengine import connect
-import os
-import sys
-module_path = os.path.abspath(os.path.join('..'))
-if module_path not in sys.path:
-    sys.path.append(module_path)
 
 
 @pytest.fixture(scope="module")
 def init_db():
-    print(sys.path)
     test_db_name = "bookstore_db_test_1"
     mongo_db_seed(test_db_name)
     db = connect(test_db_name, host='localhost', port=27017)

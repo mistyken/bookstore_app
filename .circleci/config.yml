@@ -26,4 +26,4 @@ jobs: # A basic unit of work in a run
             - "/opt/conda/envs/CMPE272"
       - run:
           command: |
-            python -m pytest
+            python -m pytest -s
