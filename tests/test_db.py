@@ -1,6 +1,6 @@
 import pytest
 import datetime
-from db.db_seed import mongo_db_seed
+from db_seed import mongo_db_seed
 from db.book import Book
 from db.customer import Customer
 from db.inventory import Inventory

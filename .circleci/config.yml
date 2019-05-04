@@ -7,7 +7,7 @@ jobs: # A basic unit of work in a run
       - image: continuumio/miniconda3
         environment: # environment variables for primary container
           DATABASE_URL: mongodb://localhost:27017
-          PYTHONPATH: /root/circleci-python-mongodb
+          # PYTHONPATH: /root/circleci-python-mongodb
       - image: circleci/mongo:4.0.3
     steps: # steps that comprise the `build` job
       - checkout # check out source code to working directory
@@ -26,4 +26,4 @@ jobs: # A basic unit of work in a run
             - "/opt/conda/envs/CMPE272"
       - run:
           command: |
-            pytest
+            python -m pytest -s
