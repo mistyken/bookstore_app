@@ -35,8 +35,11 @@ def create_app(test_config=None):
     def hello():
         return 'Hello, World!'
 
-    from . import order
+    from . import order, inventory, book, customer
     app.register_blueprint(order.bp)
+    app.register_blueprint(inventory.bp)
+    app.register_blueprint(book.bp)
+    app.register_blueprint(customer.bp)
 
     db.init_app(app)
 
