@@ -67,6 +67,7 @@ def test_valid_data_entry(init_db):
         books=[book_saved.id],
         shipping_address=sample_customer.address,
         total_price=book_saved.price,
+        order_status="processing",
         order_date=datetime.datetime.utcnow()
     ).save()
     sample_customer.orders.append(order.id)

@@ -56,6 +56,7 @@ def mongo_db_seed(db_name):
                 books=books,
                 shipping_address=customer.address,
                 total_price=total,
+                order_status="processing",
                 order_date=datetime.datetime.utcnow()
             ).save()
             customer.orders.append(order.id)
