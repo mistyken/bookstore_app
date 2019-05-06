@@ -10,4 +10,4 @@ bp = Blueprint('order', __name__, url_prefix='/order')
 @bp.route('/')
 def index():
     orders = Order.objects
-    return str([order.to_json() for order in orders])
+    return orders.to_json()
