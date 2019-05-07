@@ -10,4 +10,4 @@ bp = Blueprint('customer', __name__, url_prefix='/customer')
 @bp.route('/')
 def index():
     customers = Customer.objects
-    return str([customer.to_json() for customer in customers])
+    return customers.to_json()
