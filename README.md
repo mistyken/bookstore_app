@@ -33,7 +33,7 @@ python db_seed <dev_db_name>
 ```
 To start the app server in dev mode
 ```bash
-exprot FLASK_APP=app
+export FLASK_APP=app
 export FLASK_ENV=develop
 flask run
 ```
