@@ -24,15 +24,18 @@ def create():
         inventory = Inventory.objects(book=book).get()
         if inventory.stock > 0:
             books.append(book)
-    order = Order(
-        customer_name=request_json['customer_name'],
-        books=books,
-        shipping_address=request_json['shipping_address'],
-        total_price=request_json['total_price'],
-        order_status="processing",
-        order_date=datetime.datetime.now
-    ).save()
-    return order.to_json()
+    if len(books) > 0:
+        order = Order(
+            customer_name=request_json['customer_name'],
+            books=books,
+            shipping_address=request_json['shipping_address'],
+            total_price=request_json['total_price'],
+            order_status="processing",
+            order_date=datetime.datetime.now
+        ).save()
+        return order.to_json()
+    else:
+        return "no order has been created. book out of stock"
 
 
 @bp.route('/update', methods=['PUT'])

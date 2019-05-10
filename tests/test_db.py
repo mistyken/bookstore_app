@@ -1,25 +1,14 @@
 import pytest
 import datetime
-from db_seed import mongo_db_seed
+
 from db.book import Book
 from db.customer import Customer
 from db.inventory import Inventory
 from db.order import Order
 from mongoengine.errors import ValidationError
-from mongoengine import connect
 
 
-@pytest.fixture(scope="module")
-def init_db():
-    test_db_name = "bookstore_db_test_1"
-    mongo_db_seed(test_db_name)
-    db = connect(test_db_name, host='localhost', port=27017)
-    yield db
-    print("teardown {}".format(test_db_name))
-    db.drop_database(test_db_name)
-
-
-def test_entry_counts(init_db):
+def test_entry_counts(app):
     book_count = Book.objects.count()
     assert book_count == 10
     inventory_count = Inventory.objects.count()
@@ -30,7 +19,7 @@ def test_entry_counts(init_db):
     assert order_count >= 10
 
 
-def test_valid_data_entry(init_db):
+def test_valid_data_entry(app):
     book_input = Book(
         title="Test book title",
         isbn="Test12345",
@@ -78,7 +67,7 @@ def test_valid_data_entry(init_db):
     assert order_customer.id == sample_customer.id
 
 
-def test_invalid_data_entry(init_db):
+def test_invalid_data_entry(app):
     invalid_book = Book(
         price="123",
         published=datetime.datetime.utcnow(),
