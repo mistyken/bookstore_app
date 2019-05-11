@@ -1,7 +1,6 @@
 import pytest
 from app import create_app
 from mongoengine import connect
-from flask_mongoengine import MongoEngine
 from db_seed import mongo_db_seed
 
 
@@ -9,7 +8,6 @@ from db_seed import mongo_db_seed
 def app():
     test_db_name = "bookstore_db_test_1"
     db_conn = connect(test_db_name, host='localhost', port=27017)
-    db = MongoEngine()
 
     app = create_app({
         'TESTING': True,
