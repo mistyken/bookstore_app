@@ -35,7 +35,8 @@ def create_app(test_config=None):
     def hello():
         return 'Hello, World!'
 
-    from . import order, inventory, book, customer
+    from . import order, inventory, book, customer, bookstore
+    app.register_blueprint(bookstore.bp)
     app.register_blueprint(order.bp)
     app.register_blueprint(inventory.bp)
     app.register_blueprint(book.bp)
