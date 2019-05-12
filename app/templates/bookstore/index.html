@@ -10,7 +10,11 @@
       <header>
         <div>
           <h1>{{ book['title'] }}</h1>
-          <div class="about">By {{ book['author'] }}, Published by {{ book['publisher']}} on {{ book['published'].strftime('%Y-%m-%d') }}</div>
+            <div class="about">By {{ book['author'] }}, Published by {{ book['publisher']}} on {{ book['published'].strftime('%Y-%m-%d') }}</div>
+            <div>
+                Price: {{ book['price']}}
+                <a class="action" href="{{ url_for('order.create') }}">Add to Cart</a>
+            </div>
         </div>
       </header>
     </article>
