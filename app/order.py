@@ -15,7 +15,7 @@ def index():
     return orders.to_json()
 
 
-@bp.route('/create', methods=['POST'])
+@bp.route('/create', methods=['GET', 'POST'])
 def create():
     request_json = request.get_json()
     books = []
