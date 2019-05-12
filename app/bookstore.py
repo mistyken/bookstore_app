@@ -1,7 +1,7 @@
 from db.book import Book
 
 from flask import (
-    Blueprint, flash, redirect, render_template, request, url_for
+    Blueprint, flash, redirect, render_template, request, url_for, g
 )
 
 bp = Blueprint('bookstore', __name__)
