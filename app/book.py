@@ -16,3 +16,4 @@ def index():
     else:
         books = Book.objects.all()
     return books.to_json()
+
