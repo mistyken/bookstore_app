@@ -15,9 +15,11 @@
                 Price: {{ book['price']}} <br>
             </div>
             <div>
-                <form action="{{url_for('bookstore.add_to_cart')}}" method="POST">
-                    Copies: <Input type="number" name="copies" size="20">
-{#                    <Input type="number" name="title" value=book.title>#}
+                <form action="{{url_for('bookstore.add_to_cart')}}" method="POST" onsubmit="tezzz(book)">
+                    Copies:
+                    <input type="number" name="copies" size="40" maxlength="2">
+                    <input type="hidden" name="book_isbn" value="{{book['isbn'] }}">
+{#                    <a#}
                     <input type="submit" name="remove" value="Add to Cart">
                 </form>
             </div>

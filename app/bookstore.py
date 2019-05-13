@@ -1,5 +1,6 @@
 from db.book import Book
 from db.inventory import Inventory
+from db.customer import Customer
 
 from flask import (
     Blueprint, flash, redirect, render_template, request, url_for, g
@@ -19,18 +20,19 @@ def index():
 @bp.route('/addcart', methods=['POST'])
 def add_to_cart():
     copies = request.form.get('copies')
-    isbn = request.form.get('title')
-    print(isbn)
+    isbn = request.form.get('book_isbn')
+    create_order(copies, isbn)
+
     return render_template('bookstore/order.html')
 
 
 @bp.route('/checkoutoption', methods=['POST'])
 def at_checkout():
     if request.method == 'POST':
+
         if request.form['submit_btn'] == 'Keep Browsing':
             return redirect(url_for('bookstore.index'))
         elif request.form['submit_btn'] == 'Checkout':
-            # purchase_books()
             return redirect(url_for('order.create'))
 
 
@@ -42,5 +44,10 @@ def get_book_list():
         if inventory.stock > 0:
             available_books.append(cur_book)
     return available_books
+
+def create_order(copies, isbn):
+    book = Book.objects(isbn=isbn).get()
+    customer = Customer.objects(first_name="Kennth").get()
+
 
 # def purchase_books():
