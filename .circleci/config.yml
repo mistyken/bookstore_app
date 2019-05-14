@@ -18,7 +18,9 @@ jobs: # A basic unit of work in a run
           name: "Check if conda env list contains CMPE272. If so, cache is restored. Else create env"
           command: echo 'export TEMP=conda env list | grep CMPE272' >> $BASH_ENV
       - run:
-          command: if [[ $TEMP != *"CMPE272"* ]]; then conda env create environment.yml; fi
+          command: |
+            echo $TEMP
+            if [[ $TEMP != *"CMPE272"* ]]; then conda env create environment.yml; fi
       - run:
           command: |
             echo ". /opt/conda/etc/profile.d/conda.sh" >> $BASH_ENV
