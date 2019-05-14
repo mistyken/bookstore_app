@@ -16,7 +16,9 @@ jobs: # A basic unit of work in a run
           key: deps9-{{ checksum "environment.yml" }}
       - run:
           name: "Check if conda env list contains CMPE272. If so, cache is restored. Else create env"
-          command: echo 'export TEMP=conda env list | grep CMPE272' >> $BASH_ENV
+          command: |
+            echo 'export TEMP=conda env list | grep CMPE272' >> $BASH_ENV
+            source $BASH_ENV
       - run:
           command: |
             echo $TEMP
