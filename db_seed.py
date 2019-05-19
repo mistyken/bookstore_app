@@ -39,6 +39,7 @@ def mongo_db_seed(db_name):
             last_name=fake.last_name(),
             address=fake.address(),
             email=fake.email(),
+            password='12345678',
             phone=fake.phone_number(),
             customer_since=datetime.datetime.utcnow(),
             orders=[]
