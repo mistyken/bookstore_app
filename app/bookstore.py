@@ -10,12 +10,14 @@ bp = Blueprint('bookstore', __name__)
 
 shopping_cart = []
 
+
 @bp.route('/')
 def index():
 
     available_book_list = get_book_list()
 
     return render_template('bookstore/index.html', books=available_book_list)
+
 
 @bp.route('/addcart', methods=['POST'])
 def add_to_cart():
