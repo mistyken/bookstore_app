@@ -22,8 +22,7 @@ def index():
 @bp.route('/addcart', methods=['POST'])
 def add_to_cart():
     copies = request.form.get('copies')
-    isbn = request.form.get('book_isbn')
-    create_order(copies, isbn)
+    # create_order(copies, isbn)
 
     return render_template('bookstore/order.html')
 
@@ -46,6 +45,7 @@ def get_book_list():
         if inventory.stock > 0:
             available_books.append(cur_book)
     return available_books
+
 
 def create_order(copies, isbn):
     book = Book.objects(isbn=isbn).get()
