@@ -1,4 +1,4 @@
-CMPE-272 Bookstore project
+Bookstore sample project
 
 # Setup
 If you do not have anaconda setup on your machine. Please follow guide at

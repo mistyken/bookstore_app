@@ -1,6 +1,7 @@
 from db.book import Book
 from db.inventory import Inventory
 from db.customer import Customer
+from app.auth import login_required
 
 from flask import (
     Blueprint, flash, redirect, render_template, request, url_for, g
@@ -13,29 +14,26 @@ shopping_cart = []
 
 @bp.route('/')
 def index():
-
     available_book_list = get_book_list()
 
     return render_template('bookstore/index.html', books=available_book_list)
 
 
 @bp.route('/addcart', methods=['POST'])
+@login_required
 def add_to_cart():
     copies = request.form.get('copies')
-    isbn = request.form.get('book_isbn')
-    create_order(copies, isbn)
+    # create_order(copies, isbn)
 
     return render_template('bookstore/order.html')
 
 
 @bp.route('/checkoutoption', methods=['POST'])
 def at_checkout():
-    if request.method == 'POST':
-
-        if request.form['submit_btn'] == 'Keep Browsing':
-            return redirect(url_for('bookstore.index'))
-        elif request.form['submit_btn'] == 'Checkout':
-            return redirect(url_for('order.create'))
+    if request.form['submit_btn'] == 'Keep Browsing':
+        return redirect(url_for('bookstore.index'))
+    elif request.form['submit_btn'] == 'Checkout':
+        return redirect(url_for('order.create'))
 
 
 def get_book_list():
@@ -46,6 +44,7 @@ def get_book_list():
         if inventory.stock > 0:
             available_books.append(cur_book)
     return available_books
+
 
 def create_order(copies, isbn):
     book = Book.objects(isbn=isbn).get()
