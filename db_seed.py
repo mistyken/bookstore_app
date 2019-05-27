@@ -51,7 +51,7 @@ def mongo_db_seed(db_name):
             books = [book['_id'] for book in Book.objects.aggregate(*[{"$sample": {"size": random.randint(1, 3)}}])]
             total = 0.0
             for book in books:
-                total = round(total + Book.objects.with_id(book).price)
+                total = round(total + Book.objects.with_id(book).price, 2)
             order = Order(
                 customer_name="{} {}".format(customer.first_name, customer.last_name),
                 books=books,

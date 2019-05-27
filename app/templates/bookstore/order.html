@@ -10,5 +10,15 @@
                </form>
             </div>
         </header>
+        <div>
+            <h1>Cart Content</h1>
+                {% for book in books %}
+                <div>
+                    <h1>{{ book['title'] }}</h1>
+                    <div>Price: {{ book['price'] }}</div>
+                </div>
+                {% endfor %}
+                <h1>Total Price: {{ total }}</h1>
+        </div>
     </article>
 {% endblock %}

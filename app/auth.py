@@ -1,6 +1,7 @@
 import functools
 import datetime
 from db.customer import Customer
+from db.order import Order
 
 from flask import (
     Blueprint,
@@ -110,6 +111,9 @@ def login():
 
         if error is None:
             # store the user id in a new session and return to the index
+            if session.get('order_id'):
+                order = Order.objects(id=session.get('order_id')).first()
+                order.delete()
             session.clear()
             session["user_id"] = str(user["id"])
             return redirect(url_for("bookstore.index"))
@@ -122,5 +126,8 @@ def login():
 @bp.route("/logout")
 def logout():
     """Clear the current session, including the stored user id."""
+    if session.get('order_id'):
+        order = Order.objects(id=session.get('order_id')).first()
+        order.delete()
     session.clear()
     return redirect(url_for("bookstore.index"))

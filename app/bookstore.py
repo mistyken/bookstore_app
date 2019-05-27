@@ -1,10 +1,12 @@
 from db.book import Book
+from db.order import Order
 from db.inventory import Inventory
 from db.customer import Customer
 from app.auth import login_required
+import datetime
 
 from flask import (
-    Blueprint, flash, redirect, render_template, request, url_for, g
+    Blueprint, flash, redirect, render_template, request, url_for, g, session
 )
 
 bp = Blueprint('bookstore', __name__)
@@ -23,9 +25,12 @@ def index():
 @login_required
 def add_to_cart():
     copies = request.form.get('copies')
-    # create_order(copies, isbn)
+    if str(copies) is '':
+        copies = 0
+    book_id = request.form.get('book_id')
+    order = create_order(g.user['id'], int(copies), book_id)
 
-    return render_template('bookstore/order.html')
+    return render_template('bookstore/order.html', books=order.books, total=order.total_price)
 
 
 @bp.route('/checkoutoption', methods=['POST'])
@@ -33,7 +38,7 @@ def at_checkout():
     if request.form['submit_btn'] == 'Keep Browsing':
         return redirect(url_for('bookstore.index'))
     elif request.form['submit_btn'] == 'Checkout':
-        return redirect(url_for('order.create'))
+        return redirect(url_for('bookstore.purchase_books'))
 
 
 def get_book_list():
@@ -46,9 +51,40 @@ def get_book_list():
     return available_books
 
 
-def create_order(copies, isbn):
-    book = Book.objects(isbn=isbn).get()
-    customer = Customer.objects(first_name="Kennth").get()
+def create_order(user_id, copies, book_id):
+    book = Book.objects(id=book_id).first()
+    customer = Customer.objects(id=user_id).first()
+    books = []
+    total = 0.0
+    while copies > 0:
+        books.append(book)
+        total = round(total + Book.objects.with_id(book_id).price, 2)
+        copies -= 1
 
+    """checking to see if there's a order id already stored in session"""
+    if session.get("order_id"):
+        order = Order.objects(id=session.get("order_id")).first()
+        order.total_price = round(order.total_price + total, 2)
+        for book in books:
+            order.books.append(book)
+        order.save()
+    else:
+        order = Order(
+                customer_name="{} {}".format(customer.first_name, customer.last_name),
+                books=books,
+                shipping_address=customer.address,
+                total_price=total,
+                order_status="processing",
+                order_date=datetime.datetime.now
+            ).save()
+        session["order_id"] = str(order.id)
 
-# def purchase_books():
+    return order
+
+@bp.route('/order_complete')
+def purchase_books():
+    customer = Customer.objects(id=session.get("user_id")).first()
+    order = Order.objects(id=session.get("order_id")).first()
+    customer.orders.append(order)
+    customer.save()
+    return "Order complete. The order ID is {}".format(order.id)
