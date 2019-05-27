@@ -15,6 +15,5 @@ def index():
 
 @bp.route('/<string:id>/cur_user_order')
 def cur_user_info(id):
-    print(id)
     customer = Customer.objects(id=id).first()
-    return customer.to_json()
+    return render_template('bookstore/order.html', orders=customer.orders)

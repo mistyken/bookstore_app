@@ -15,9 +15,10 @@
                 Price: {{ book['price']}} <br>
             </div>
             <div>
-                <form action="{{url_for('bookstore.add_to_cart')}}" method="POST">
+                <form action="{{ url_for('bookstore.add_to_cart') }}" method="POST">
                     Copies:
-                    <input type="number" name="copies" size="10" maxlength="2">
+                    <input type="number" name="copies" min=1>
+                    <input type="hidden" name="book_id" value= "{{book['id']}}">
                     <input type="submit" name="add_to_cart" value="Add to Cart">
                 </form>
             </div>
@@ -28,6 +29,6 @@
       <hr>
     {% endif %}
   {% endfor %}
-<a class="action" href="{{ url_for('order.create') }}">Buy</a>
+<a class="action" href="{{ url_for('bookstore.purchase_books') }}">Buy Now</a>
 
 {% endblock %}

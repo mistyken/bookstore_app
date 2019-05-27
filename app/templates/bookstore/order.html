@@ -1,14 +1,18 @@
 {% extends 'base.html' %}
 {% block content %}
     <article class="book">
-        <header>
+        <h3>Your Orders</h3>
+            {% for order in orders %}
             <div>
-                Your book has put in to cart
-               <form action="{{url_for('bookstore.at_checkout')}}" method="POST">
-                   <Input type="submit" name="submit_btn" value="Keep Browsing">
-                   <input type="submit" name="submit_btn" value="Checkout">
-               </form>
+                <h2>Order Id: {{ order['id'] }}</h2>
+                <div>Total Price: {{ order['total_price'] }}</div>
+                    {% for book in order.books %}
+                    <div>
+                        <h1>{{ book['title'] }}</h1>
+                        <div>Price: {{ book['price'] }}</div>
+                    </div>
+                    {% endfor %}
             </div>
-        </header>
+            {% endfor %}
     </article>
 {% endblock %}
