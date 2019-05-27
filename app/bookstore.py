@@ -30,7 +30,7 @@ def add_to_cart():
     book_id = request.form.get('book_id')
     order = create_order(g.user['id'], int(copies), book_id)
 
-    return render_template('bookstore/order.html', books=order.books, total=order.total_price)
+    return render_template('bookstore/cart.html', books=order.books, total=order.total_price)
 
 
 @bp.route('/checkoutoption', methods=['POST'])
@@ -38,7 +38,13 @@ def at_checkout():
     if request.form['submit_btn'] == 'Keep Browsing':
         return redirect(url_for('bookstore.index'))
     elif request.form['submit_btn'] == 'Checkout':
-        return redirect(url_for('bookstore.purchase_books'))
+        order = Order.objects(id=session.get("order_id")).first()
+
+        if len(order.books) < 1:
+            flash("You can't check out with empty cart")
+            return redirect(url_for('bookstore.index'))
+        else:
+            return purchase_books()
 
 
 def get_book_list():
@@ -81,10 +87,20 @@ def create_order(user_id, copies, book_id):
 
     return order
 
+
 @bp.route('/order_complete')
 def purchase_books():
     customer = Customer.objects(id=session.get("user_id")).first()
-    order = Order.objects(id=session.get("order_id")).first()
+    if session['order_id']:
+        order = Order.objects(id=session.get("order_id")).first()
+        if len(order.books) < 1:
+            flash("Please add some book to cart first")
+            return redirect(url_for('bookstore.index'))
+    else:
+        flash("Please add some book to cart first")
+        return redirect(url_for('bookstore.index'))
     customer.orders.append(order)
     customer.save()
-    return "Order complete. The order ID is {}".format(order.id)
+    flash("Order complete. The order ID is {}".format(order.id))
+    session['order_id'] = None
+    return redirect(url_for('bookstore.index'))
