@@ -89,6 +89,7 @@ def create_order(user_id, copies, book_id):
 
 
 @bp.route('/order_complete')
+@login_required
 def purchase_books():
     customer = Customer.objects(id=session.get("user_id")).first()
     if session['order_id']:
