@@ -45,7 +45,12 @@ def at_checkout():
             return redirect(url_for('bookstore.index'))
         else:
             return purchase_books()
-
+    elif request.form['submit_btn'] == 'Clear Cart':
+        order = Order.objects(id=session.get("order_id")).first()
+        order.delete()
+        session['order_id'] = None
+        flash("Shopping cart cleared")
+        return redirect(url_for('bookstore.index'))
 
 def get_book_list():
     available_books = []
