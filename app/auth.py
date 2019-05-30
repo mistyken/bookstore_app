@@ -1,5 +1,6 @@
 import functools
 import datetime
+import mongoengine
 from db.customer import Customer
 from db.order import Order
 
@@ -62,6 +63,8 @@ def register():
             error = "E-mail is required."
         elif not password:
             error = "Password is required."
+        elif len(password) < 6:
+            error = "Password needs to be more than 6 characters"
         elif not first_name:
             error = "first_name is required."
         elif not last_name:
@@ -74,21 +77,25 @@ def register():
         ):
             error = "E-mail {0} is already registered.".format(email)
 
-        if error is None:
-            # the name is available, store it in the database and go to
-            # the login page
-            Customer(
-                first_name=first_name,
-                last_name=last_name,
-                address=address,
-                email=email,
-                password=generate_password_hash(password),
-                phone=phone,
-                customer_since=datetime.datetime.utcnow(),
-                orders=[]
-            ).save()
+        try:
+            if error is None:
+                # the name is available, store it in the database and go to
+                # the login page
+                Customer(
+                    first_name=first_name,
+                    last_name=last_name,
+                    address=address,
+                    email=email,
+                    password=generate_password_hash(password),
+                    phone=phone,
+                    customer_since=datetime.datetime.utcnow(),
+                    orders=[]
+                ).save()
 
             return redirect(url_for("auth.login"))
+
+        except mongoengine.errors.ValidationError as ex:
+            error = ex.errors
 
         flash(error)
 
