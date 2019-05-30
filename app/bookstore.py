@@ -25,8 +25,6 @@ def index():
 @login_required
 def add_to_cart():
     copies = request.form.get('copies')
-    if str(copies) is '':
-        copies = 0
     book_id = request.form.get('book_id')
     order = create_order(g.user['id'], int(copies), book_id)
 
@@ -52,12 +50,14 @@ def at_checkout():
         flash("Shopping cart cleared")
         return redirect(url_for('bookstore.index'))
 
+
 def get_book_list():
     available_books = []
     books = Book.objects.all()
-    for cur_book in books:
-        inventory = Inventory.objects(book=cur_book).get()
+    for book in books:
+        inventory = Inventory.objects(book=book).get()
         if inventory.stock > 0:
+            cur_book = {'book': book, 'inventory': inventory.stock}
             available_books.append(cur_book)
     return available_books
 
