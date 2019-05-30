@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
     <article class="book">
-        <h3>Your Orders</h3>
+        <h2>Your Orders</h2>
             {% for order in orders %}
             <div>
                 <h2>Order Id: {{ order['id'] }}</h2>
-                <div>Total Price: {{ order['total_price'] }}</div>
+                <div>Total Price: {{ order['total_price'] }} <br> Order Status: {{ order['order_status'] }}</div>
                     {% for book in order.books %}
                     <div>
                         <h1>{{ book['title'] }}</h1>
