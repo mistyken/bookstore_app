@@ -5,7 +5,9 @@
 {% endblock %}
 
 {% block content %}
-  {% for book in books %}
+  {% for book_obj in books %}
+    {% set book = book_obj['book'] %}
+    {% set inv = book_obj['inventory'] %}
     <article class="book">
       <header>
         <div>
@@ -17,7 +19,11 @@
             <div>
                 <form action="{{ url_for('bookstore.add_to_cart') }}" method="POST">
                     Copies:
-                    <input type="number" name="copies" min=1>
+                    <select name="copies">
+                        {% for num in range(1, inv) %}
+                            <option value="{{ num }}">{{ num }}</option>
+                        {% endfor %}
+                    </select>
                     <input type="hidden" name="book_id" value= "{{book['id']}}">
                     <input type="submit" name="add_to_cart" value="Add to Cart">
                 </form>
