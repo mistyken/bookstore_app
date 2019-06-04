@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/mistyken/bookstore_app/tree/master.svg?style=svg)](https://circleci.com/gh/mistyken/bookstore_app/tree/master)
+
 Bookstore sample project
 
 # Setup
